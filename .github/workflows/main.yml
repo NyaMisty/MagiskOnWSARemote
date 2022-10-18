@@ -15,18 +15,48 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y setools lzip wine patchelf e2fsprogs aria2 python3 attr
+      
       - uses: actions/checkout@v3
         with:
           submodules: recursive
-      - name: Build Magusk On WSA
+      
+      - name: Update submodules
+        run: |
+          git submodule update --init --recursive
+          git submodule update --remote
+      
+      - name: Build Magisk On WSA
         run: |
           cd ./MagiskOnWSALocal
           scripts/build.sh \
-          --arch arm64 \
+          --arch x64 \
           --release-type WIF \
-          --magisk-ver stable \
+          --magisk-ver beta \
           --gapps-brand MindTheGapps \
           --gapps-variant pico \
           --remove-amazon \
           --root-sol magisk
           ls -l
+      
+      - name: Generate timestamp
+        id: timestamp # output: value
+        run: |
+          TIMESTAMP="$(date +"%Y%m%d")"
+          echo "Timestamp: ${TIMESTAMP}"
+          echo "::set-output name=value::${TIMESTAMP}"
+      - name: Create New Release and Upload
+        if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "output/*"
+          name: "${{ format('WSA: {0}', steps.timestamp.outputs.value) }}"
+          tag: $${{ steps.timestamp.outputs.value }}
+          commit: ${{ github.sha }}
+          #prerelease: true
+          allowUpdates: true
+
+          # XXX: edit this to false & true if you want to preserve original artifact
+          removeArtifacts: true
+          replacesArtifacts: false
+          artifactErrorsFailBuild: true
+          token: ${{ secrets.GITHUB_TOKEN }}

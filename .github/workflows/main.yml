@@ -40,7 +40,7 @@ jobs:
           
           export TERM="screen-256color"
           
-          unbuffer -p bash -i ./build.sh \
+          bash -i ./build.sh \
               --arch x64 \
               --release-type WIF \
               --magisk-ver beta \
@@ -49,7 +49,8 @@ jobs:
               --remove-amazon \
               --root-sol magisk \
               --compress
-          ls -l output
+          
+          ls -l ../output
       
       - name: Generate timestamp
         id: timestamp # output: value

@@ -36,7 +36,9 @@ jobs:
               winetricks msxml6 || abort
           }
           
-          echo 'export; ./build.sh \
+          export SHELL="/bin/bash"
+          export TERM="xterm-256color"
+          bash -i ./build.sh \
               --arch x64 \
               --release-type WIF \
               --magisk-ver beta \
@@ -44,8 +46,7 @@ jobs:
               --gapps-variant pico \
               --remove-amazon \
               --root-sol magisk \
-              --compress \
-            ' | bash -is
+              --compress
           
           ls -l ../output
       

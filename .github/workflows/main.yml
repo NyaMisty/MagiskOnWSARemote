@@ -23,18 +23,24 @@ jobs:
       - name: Install dependencies
         run: |
           cd MagiskOnWSALocal/scripts
-          sudo apt-get update && sudo apt-get install -y whiptail setools lzip wine winetricks patchelf e2fsprogs python3-pip aria2 p7zip-full attr
+          sudo apt-get update && sudo apt-get install -y whiptail setools lzip wine winetricks patchelf e2fsprogs python3-pip aria2 p7zip-full attr expect-dev
           pip list --disable-pip-version-check | grep -E "^requests " >/dev/null 2>&1 || python3 -m pip install requests
-
-          winetricks list-installed | grep -E "^msxml6" >/dev/null 2>&1 || {
-              cp -r ../wine/.cache/* ~/.cache
-              winetricks msxml6 || abort
-          }
       
       - name: Build Magisk On WSA
         run: |
           cd MagiskOnWSALocal/scripts
-          ./build.sh \
+          
+          # prepare WineTrick
+          winetricks list-installed | grep -E "^msxml6" >/dev/null 2>&1 || {
+              cp -r ../wine/.cache/* ~/.cache
+              winetricks msxml6 || abort
+          }
+          
+          export
+          
+          export TERM="screen-256color"
+          
+          unbuffer -p bash -i ./build.sh \
               --arch x64 \
               --release-type WIF \
               --magisk-ver beta \
@@ -43,7 +49,7 @@ jobs:
               --remove-amazon \
               --root-sol magisk \
               --compress
-          ls -l
+          ls -l output
       
       - name: Generate timestamp
         id: timestamp # output: value

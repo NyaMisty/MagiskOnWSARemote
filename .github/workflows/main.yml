@@ -20,6 +20,14 @@ jobs:
           git submodule update --init --recursive
           git submodule update --remote
           
+      - name: Prepare Tmate
+        run: sudo touch /continue
+      
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+      
+      - run: sleep 10
+          
       - name: Exm GH Action?
         run: |
           (sleep 4; sudo dmesg; sudo ps aux; ) &

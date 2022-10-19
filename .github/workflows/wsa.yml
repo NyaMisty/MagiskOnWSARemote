@@ -33,7 +33,7 @@ on:
         - beta
         - canary
         - debug
-      gapps_brnad:
+      gapps_brand:
         description: "Brand of gapps"
         required: true
         default: "MindTheGapps"

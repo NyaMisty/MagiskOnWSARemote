@@ -173,7 +173,7 @@ jobs:
 
       - id: tagName
         run: |
-          name="${{ steps.split.outputs._1 }}-${{ github.event.inputs.release_type }}-${{ github.event.inputs.magisk_apk }}-${{ github.event.inputs.gapps_brand }}-${{ github.event.inputs.gapps_variant }}-${{ github.event.inputs.root_sol }}"
+          name="${{ steps.split.outputs._1 }}-${{ github.event.inputs.release_type }}"
           name="${name// /}"
           echo "::set-output name=name::$name"
         working-directory: MagiskOnWSALocal

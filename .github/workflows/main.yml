@@ -28,12 +28,12 @@ jobs:
       
       - run: sleep 10
           
-      - name: Exm GH Action?
-        run: |
-          (sleep 4; sudo dmesg; sudo ps aux; ) &
-          tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 8 | head -n 1
-          echo "fuck2"
-          kill -9 %1  
+#       - name: Exm GH Action?
+#         run: |
+#           (sleep 4; sudo dmesg; sudo ps aux; ) &
+#           tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 8 | head -n 1
+#           echo "fuck2"
+#           kill -9 %1  
         
       - name: Install dependencies
         run: |
@@ -45,11 +45,13 @@ jobs:
         run: |
           cd MagiskOnWSALocal/scripts
           
-          echo "fuck urandom"
-          tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 8 | head -n 1
+          #echo "fuck urandom"
+          #tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 8 | head -n 1
           
-          # prepare WineTrick
-          echo '
+          cp ~/.ssh/id_rsa.pub ~/.ssh/authorized_keys
+          chmod 0600 ~/.ssh/authorized_keys
+          
+          ssh -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null localhost "cd $(pwd);"'
             export SHELL="/bin/bash"
             export TERM="xterm-256color"
             tty; export;
@@ -67,7 +69,8 @@ jobs:
               --remove-amazon \
               --root-sol magisk \
               --compress \
-          ' | python3 -c 'import pty; pty.spawn(["/bin/bash", "-i", "-s"])'
+          '
+          # | python3 -c 'import pty; pty.spawn(["/bin/bash", "-i", "-s"])'
                   
           ls -l ../output
       

@@ -161,7 +161,7 @@ jobs:
               --root-sol $ROOT_SOL \
               --compress \
             "
-          path=$(find ./output -name "*.7z"|head -n 1)
+          path=$(find output -name "*.7z"|head -n 1)
           echo "##[set-output name=path;]$path"
           echo "##[set-output name=name;]$(basename $path)"
           

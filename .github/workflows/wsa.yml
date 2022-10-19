@@ -159,7 +159,7 @@ jobs:
               --gapps-variant $GAPPS_VARIANT \
               --remove-amazon \
               --root-sol $ROOT_SOL \
-              --compress \
+              #--compress \
             "
           path=$(find output -name "*.7z"|head -n 1)
           echo "##[set-output name=path;]$path"

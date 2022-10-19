@@ -148,6 +148,7 @@ jobs:
             export TERM="xterm-256color"
             tty; export;
             
+            set -x
             bash -x ./build.sh \
               --arch $ARCH \
               --release-type ${RELEASE_TYPE_MAP[$RELEASE_TYPE]} \

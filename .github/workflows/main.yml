@@ -20,19 +20,18 @@ jobs:
           git submodule update --init --recursive
           git submodule update --remote
           
+      - name: Exm GH Action?
+        run: |
+          (sleep 4; dmesg; ps aux; done) &
+          tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 8 | head -n 1
+          echo "fuck2"
+          kill -9 %1  
+        
       - name: Install dependencies
         run: |
           cd MagiskOnWSALocal/scripts
           sudo apt-get update && sudo apt-get install -y whiptail setools lzip wine winetricks patchelf e2fsprogs python3-pip aria2 p7zip-full attr expect-dev
           pip list --disable-pip-version-check | grep -E "^requests " >/dev/null 2>&1 || python3 -m pip install requests
-      
-      
-      - name: Exm GH Action?
-        run: |
-          (while true; do ps a; sleep 1; done) &
-          tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 8 | head -n 1
-          echo "fuck2"
-          kill -9 %1
       
       - name: Build Magisk On WSA
         run: |

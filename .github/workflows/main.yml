@@ -30,6 +30,9 @@ jobs:
         run: |
           cd MagiskOnWSALocal/scripts
           
+          echo "fuck urandom"
+          tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 8 | head -n 1
+          
           # prepare WineTrick
           echo '
             export SHELL="/bin/bash"

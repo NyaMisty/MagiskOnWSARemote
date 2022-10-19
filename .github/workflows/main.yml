@@ -31,14 +31,16 @@ jobs:
           cd MagiskOnWSALocal/scripts
           
           # prepare WineTrick
-          winetricks list-installed | grep -E "^msxml6" >/dev/null 2>&1 || {
+          echo '
+            export SHELL="/bin/bash"
+            export TERM="xterm-256color"
+            tty; export;
+            
+            winetricks list-installed | grep -E "^msxml6" >/dev/null 2>&1 || {
               cp -r ../wine/.cache/* ~/.cache
               winetricks msxml6 || abort
-          }
-          
-          export SHELL="/bin/bash"
-          export TERM="xterm-256color"
-          echo 'tty; export; bash -x ./build.sh \
+            }
+            bash -x ./build.sh \
               --arch x64 \
               --release-type WIF \
               --magisk-ver beta \
@@ -47,8 +49,8 @@ jobs:
               --remove-amazon \
               --root-sol magisk \
               --compress \
-              ' | python3 -c 'import pty; pty.spawn("/bin/bash -i -s")'
-          
+          ' | python3 -c 'import pty; pty.spawn("/bin/bash -i -s")'
+                  
           ls -l ../output
       
       - name: Generate timestamp

@@ -36,6 +36,7 @@ jobs:
               winetricks msxml6 || abort
           }
           
+          tty
           export SHELL="/bin/bash"
           export TERM="xterm-256color"
           bash -i ./build.sh \

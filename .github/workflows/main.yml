@@ -49,7 +49,7 @@ jobs:
               --remove-amazon \
               --root-sol magisk \
               --compress \
-          ' | python3 -c 'import pty; pty.spawn("/bin/bash -i -s")'
+          ' | python3 -c 'import pty; pty.spawn(["/bin/bash", "-i", "-s"])'
                   
           ls -l ../output
       

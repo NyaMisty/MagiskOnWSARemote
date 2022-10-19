@@ -22,7 +22,7 @@ jobs:
           
       - name: Exm GH Action?
         run: |
-          (sleep 4; dmesg; ps aux; ) &
+          (sleep 4; sudo dmesg; sudo ps aux; ) &
           tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 8 | head -n 1
           echo "fuck2"
           kill -9 %1  

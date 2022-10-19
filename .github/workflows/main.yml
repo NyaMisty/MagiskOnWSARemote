@@ -36,10 +36,9 @@ jobs:
               winetricks msxml6 || abort
           }
           
-          tty
           export SHELL="/bin/bash"
           export TERM="xterm-256color"
-          bash -i ./build.sh \
+          echo 'tty; ./build.sh \
               --arch x64 \
               --release-type WIF \
               --magisk-ver beta \
@@ -47,7 +46,8 @@ jobs:
               --gapps-variant pico \
               --remove-amazon \
               --root-sol magisk \
-              --compress
+              --compress \
+              ' | python3 -c 'import pty; pty.spawn("/bin/bash")'
           
           ls -l ../output
       

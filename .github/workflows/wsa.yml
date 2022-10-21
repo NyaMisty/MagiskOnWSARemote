@@ -163,6 +163,7 @@ jobs:
             "
           
       - name: Get Release Filenames
+        id: output
         working-directory: MagiskOnWSALocal
         run: |
           find output -name "*.7z"|head -n 1
@@ -179,7 +180,7 @@ jobs:
         uses: rishabhgupta/split-by@v1
         id: split
         with:
-          string: ${{ steps.run.outputs.name }}
+          string: ${{ steps.output.outputs.name }}
           split-by: '_'
 
       - name: Make tagName
@@ -226,6 +227,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.latest_release_info.outputs.upload_url }}
-          asset_path: MagiskOnWSALocal/${{ steps.run.outputs.path }}
-          asset_name: ${{ steps.run.outputs.name }}
+          asset_path: MagiskOnWSALocal/${{ steps.output.outputs.path }}
+          asset_name: ${{ steps.output.outputs.name }}
           asset_content_type: application/x-7z-compressed

@@ -142,7 +142,7 @@ jobs:
           chmod 0600 ~/.ssh/authorized_keys
           
           declare -A RELEASE_TYPE_MAP=(["retail"]="retail" ["release preview"]="RP" ["insider slow"]="WIS" ["insider fast"]="WIF")
-          set -x
+          #set -x
           
           ssh -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null localhost "cd $(pwd);
             cd scripts
@@ -163,7 +163,7 @@ jobs:
             "
           
       - name: Get Release Filenames
-        id: output
+        id: output_files
         working-directory: MagiskOnWSALocal
         run: |
           find output -name "*.7z"|head -n 1
@@ -180,7 +180,7 @@ jobs:
         uses: rishabhgupta/split-by@v1
         id: split
         with:
-          string: ${{ steps.output.outputs.name }}
+          string: ${{ steps.output_files.outputs.name }}
           split-by: '_'
 
       - name: Make tagName
@@ -227,6 +227,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.latest_release_info.outputs.upload_url }}
-          asset_path: MagiskOnWSALocal/${{ steps.output.outputs.path }}
-          asset_name: ${{ steps.output.outputs.name }}
+          asset_path: MagiskOnWSALocal/${{ steps.output_files.outputs.path }}
+          asset_name: ${{ steps.output_files.outputs.name }}
           asset_content_type: application/x-7z-compressed

@@ -161,31 +161,38 @@ jobs:
               --root-sol $ROOT_SOL \
               --compress \
             "
-          path=$(find output -name "*.7z"|head -n 1)
+          path="$(find output -name "*.7z"|head -n 1)"
+          name="$(basename "$path")"
+          echo "path: $path"
+          echo "name: $name"
           echo "##[set-output name=path;]$path"
-          echo "##[set-output name=name;]$(basename $path)"
+          echo "##[set-output name=name;]$name"
       
-      - uses: rishabhgupta/split-by@v1
+      - name: Split version
+        uses: rishabhgupta/split-by@v1
         id: split
         with:
           string: ${{ steps.run.outputs.name }}
           split-by: '_'
 
-      - id: tagName
+      - name: Make tagName
+        id: tagName
         run: |
           name="${{ steps.split.outputs._1 }}-${{ github.event.inputs.release_type }}"
           name="${name// /}"
           echo "::set-output name=name::$name"
         working-directory: MagiskOnWSALocal
       
-      - uses: mukunku/tag-exists-action@v1.0.0
+      - name: Check Tag Exists
+        uses: mukunku/tag-exists-action@v1.0.0
         id: checkTag
         with:
           tag: ${{ steps.tagName.outputs.name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
-      - id: create_release
+      - name: Create Release
+        id: create_release
         uses: actions/create-release@v1
         if: ${{ steps.checkTag.outputs.exists == 'false' }}
         env:

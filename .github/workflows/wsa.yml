@@ -161,12 +161,19 @@ jobs:
               --root-sol $ROOT_SOL \
               --compress \
             "
+          
+      - name: Get Release Filenames
+        working-directory: MagiskOnWSALocal
+        run: |
+          find output -name "*.7z"|head -n 1
           path="$(find output -name "*.7z"|head -n 1)"
           name="$(basename "$path")"
           echo "path: $path"
           echo "name: $name"
-          echo "##[set-output name=path;]$path"
-          echo "##[set-output name=name;]$name"
+          echo "path=$path" >> $GITHUB_OUTPUT
+          echo "name=$name" >> $GITHUB_OUTPUT
+          #echo "##[set-output name=path;]$path"
+          #echo "##[set-output name=name;]$name"
       
       - name: Split version
         uses: rishabhgupta/split-by@v1
